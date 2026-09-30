@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A Little Place for You ✦</title>
+<style>
+  :root{
+    --bg:#05060d;
+    --panel:rgba(18,20,35,.72);
+    --panel2:rgba(12,14,26,.82);
+    --text:#f7f4ff;
+    --muted:#a9a7b9;
+    --accent:#c9b7ff;
+    --accent2:#8ce5ff;
+    --pink:#ff9fc7;
+    --gold:#ffe6a7;
+    --shadow:0 20px 70px rgba(0,0,0,.45);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+                 "Segoe UI", sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(circle at 20% 15%, rgba(127,95,255,.12), transparent 28%),
+      radial-gradient(circle at 82% 22%, rgba(83,221,255,.09), transparent 25%),
+      radial-gradient(circle at 50% 80%, rgba(255,126,183,.07), transparent 26%),
+      var(--bg);
+    overflow-x:hidden;
+  }
+
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background-image:
+      radial-gradient(1px 1px at 15% 25%, rgba(255,255,255,.65) 50%, transparent 52%),
+      radial-gradient(1px 1px at 32% 68%, rgba(255,255,255,.45) 50%, transparent 52%),
+      radial-gradient(1px 1px at 75% 37%, rgba(255,255,255,.6) 50%, transparent 52%),
+      radial-gradient(1px 1px at 89% 78%, rgba(255,255,255,.4) 50%, transparent 52%),
+      radial-gradient(1px 1px at 55% 12%, rgba(255,255,255,.45) 50%, transparent 52%);
+    background-size:260px 260px, 330px 330px, 290px 290px, 370px 370px, 310px 310px;
+    opacity:.8;
+  }
+
+  #stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .star{
+    position:absolute;
+    width:3px;height:3px;
+    border-radius:50%;
+    background:#fff;
+    opacity:.5;
+    animation:twinkle 3s ease-in-out infinite;
+  }
+  @keyframes twinkle{
+    0%,100%{transform:scale(.65);opacity:.25}
+    50%{transform:scale(1.35);opacity:.9}
+  }
+
+  .wrap{
+    width:min(1040px,92%);
+    margin:auto;
+    position:relative;
+    z-index:1;
+  }
+
+  nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:22px 0;
+  }
+  .brand{
+    font-weight:800;
+    letter-spacing:.08em;
+    font-size:.9rem;
+    color:#ddd7f2;
+  }
+  .brand span{color:var(--accent2)}
+  .tiny-note{
+    color:var(--muted);
+    font-size:.82rem;
+  }
+
+  .hero{
+    min-height:calc(100vh - 80px);
+    display:grid;
+    place-items:center;
+    text-align:center;
+    padding:50px 0 80px;
+  }
+
+  .moon{
+    width:92px;height:92px;
+    margin:0 auto 26px;
+    border-radius:50%;
+    background:linear-gradient(140deg,#fffef3,#ddd7ff);
+    box-shadow:0 0 50px rgba(215,210,255,.22), 0 0 120px rgba(151,220,255,.08);
+    position:relative;
+  }
+  .moon::after{
+    content:"";
+    position:absolute;
+    width:92px;height:92px;
+    border-radius:50%;
+    background:var(--bg);
+    left:30px;top:-10px;
+  }
+
+  .eyebrow{
+    text-transform:uppercase;
+    letter-spacing:.24em;
+    font-size:.74rem;
+    color:#9e99b9;
+    margin-bottom:18px;
+  }
+
+  h1{
+    font-size:clamp(2.7rem,7vw,5.8rem);
+    line-height:.96;
+    margin:0;
+    letter-spacing:-.055em;
+  }
+  h1 em{
+    display:block;
+    font-style:normal;
+    background:linear-gradient(90deg,var(--accent),var(--accent2),var(--pink));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+
+  .hero p{
+    max-width:650px;
+    margin:28px auto 0;
+    font-size:clamp(1rem,2vw,1.2rem);
+    line-height:1.75;
+    color:#b8b5c6;
+  }
+
+  .cta-row{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:32px;
+  }
+
+  button{
+    border:0;
+    cursor:pointer;
+    font:inherit;
+  }
+  .btn{
+    padding:13px 20px;
+    border-radius:999px;
+    color:#0a0b13;
+    background:linear-gradient(135deg,#eee9ff,#b9eaff);
+    font-weight:800;
+    box-shadow:0 10px 30px rgba(166,204,255,.15);
+    transition:.25s ease;
+  }
+  .btn:hover{transform:translateY(-3px);box-shadow:0 15px 35px rgba(166,204,255,.24)}
+  .btn.secondary{
+    color:#ddd9e8;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:none;
+  }
+
+  .section{
+    padding:45px 0 95px;
+  }
+
+  .section-title{
+    font-size:clamp(1.8rem,4vw,2.8rem);
+    margin:0 0 12px;
+    letter-spacing:-.03em;
+  }
+  .section-sub{
+    color:var(--muted);
+    margin:0 0 28px;
+    line-height:1.7;
+  }
+
+  .mood-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+  }
+  .mood{
+    text-align:left;
+    padding:20px;
+    border-radius:22px;
+    color:#eeeaf6;
+    background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.025));
+    border:1px solid rgba(255,255,255,.09);
+    transition:.25s ease;
+  }
+  .mood:hover{
+    transform:translateY(-4px);
+    border-color:rgba(198,181,255,.35);
+    background:rgba(198,181,255,.06);
+  }
+  .mood .emoji{font-size:1.7rem}
+  .mood strong{display:block;margin-top:9px}
+  .mood small{display:block;margin-top:6px;color:#9d9aa9;line-height:1.45}
+
+  .sound-hint{
+    display:inline-block;
+    margin-top:12px;
+    font-size:.72rem;
+    letter-spacing:.04em;
+    color:#b8b0d7;
+    opacity:.8;
+  }
+  .mood.active{
+    transform:translateY(-4px);
+    border-color:rgba(203,186,255,.45);
+    box-shadow:0 12px 35px rgba(133,111,255,.12);
+  }
+  .now-playing{
+    margin-bottom:10px;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    color:#858097;
+  }
+
+  .tap-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin-top:28px;
+  }
+  .tap-card{
+    position:relative;
+    overflow:hidden;
+    text-align:left;
+    min-height:225px;
+    padding:26px;
+    border-radius:25px;
+    color:var(--text);
+    background:
+      radial-gradient(circle at 85% 10%,rgba(255,169,207,.09),transparent 32%),
+      linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.09);
+    transition:.28s ease;
+  }
+  .tap-card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(210,195,255,.34);
+    box-shadow:0 18px 50px rgba(0,0,0,.25);
+  }
+  .tap-card::after{
+    content:"";
+    position:absolute;
+    inset:auto -30px -55px auto;
+    width:150px;height:150px;
+    border-radius:50%;
+    background:rgba(185,176,255,.055);
+    filter:blur(6px);
+  }
+  .tap-icon{display:block;font-size:2rem}
+  .tap-title{display:block;margin-top:17px;font-weight:800;font-size:1.06rem}
+  .tap-sub{display:block;margin-top:6px;color:#9491a2;font-size:.85rem;line-height:1.45}
+  .tap-reveal{
+    display:block;
+    margin-top:20px;
+    max-width:90%;
+    color:#ded8ef;
+    line-height:1.65;
+    opacity:0;
+    transform:translateY(10px);
+    max-height:0;
+    overflow:hidden;
+    transition:.38s ease;
+  }
+  .tap-card.revealed{
+    border-color:rgba(236,207,255,.32);
+    background:
+      radial-gradient(circle at 80% 18%,rgba(255,156,206,.11),transparent 30%),
+      linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.024));
+  }
+  .tap-card.revealed .tap-reveal{
+    opacity:1;
+    transform:translateY(0);
+    max-height:160px;
+  }
+
+  @media(max-width:800px){
+    .tap-grid{grid-template-columns:1fr}
+  }
+
+  .message-box{
+    margin-top:20px;
+    min-height:170px;
+    display:grid;
+    place-items:center;
+    text-align:center;
+    padding:30px;
+    border-radius:28px;
+    background:
+      radial-gradient(circle at 50% 0%,rgba(190,173,255,.13),transparent 50%),
+      var(--panel2);
+    border:1px solid rgba(255,255,255,.09);
+    box-shadow:var(--shadow);
+  }
+  #message{
+    max-width:720px;
+    font-size:clamp(1.15rem,3vw,1.65rem);
+    line-height:1.65;
+    color:#f0edf8;
+    margin:0;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .message-actions{margin-top:18px}
+  .mini-btn{
+    padding:10px 15px;
+    border-radius:12px;
+    color:#d9d4e8;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+  }
+
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin-top:28px;
+  }
+  .card{
+    padding:26px;
+    border-radius:24px;
+    background:linear-gradient(150deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+    border:1px solid rgba(255,255,255,.08);
+    min-height:180px;
+  }
+  .card .icon{font-size:1.7rem}
+  .card h3{margin:16px 0 8px;font-size:1.05rem}
+  .card p{color:#a9a6b7;line-height:1.65;margin:0}
+
+  .letter{
+    margin-top:28px;
+    padding:30px;
+    border-radius:28px;
+    background:
+      linear-gradient(120deg,rgba(255,220,236,.055),rgba(192,183,255,.05)),
+      var(--panel2);
+    border:1px solid rgba(255,255,255,.09);
+  }
+  .letter-top{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    color:#aaa5b6;
+    font-size:.85rem;
+  }
+  .letter p{
+    color:#d5d1dc;
+    line-height:1.9;
+    font-size:1.05rem;
+    margin:26px 0 0;
+  }
+  .signature{
+    margin-top:22px;
+    color:#bbb4cf;
+    font-style:italic;
+  }
+
+  .breathing{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+    align-items:center;
+    padding:28px;
+    margin-top:28px;
+    border-radius:28px;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .orb-wrap{
+    display:grid;
+    place-items:center;
+    min-height:270px;
+  }
+  .orb{
+    width:145px;height:145px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#fff,#d4c9ff 38%,#9c84ff 72%);
+    box-shadow:0 0 80px rgba(194,177,255,.22);
+    animation:breath 8s ease-in-out infinite;
+  }
+  @keyframes breath{
+    0%,100%{transform:scale(.72);opacity:.78}
+    50%{transform:scale(1);opacity:1}
+  }
+  .breath-label{
+    margin-top:18px;
+    text-align:center;
+    color:#bcb8c8;
+    font-size:.93rem;
+  }
+  .breathing h3{font-size:1.4rem;margin-top:0}
+  .breathing p{color:#a9a6b7;line-height:1.7}
+
+  footer{
+    text-align:center;
+    padding:10px 0 50px;
+    color:#686677;
+    font-size:.82rem;
+  }
+
+  .hidden{display:none !important}
+
+  .heart-pop{
+    position:fixed;
+    pointer-events:none;
+    z-index:20;
+    font-size:20px;
+    animation:floatAway 1.6s ease forwards;
+  }
+  @keyframes floatAway{
+    0%{opacity:1;transform:translateY(0) scale(.8)}
+    100%{opacity:0;transform:translateY(-120px) translateX(var(--drift)) scale(1.6)}
+  }
+
+  .toast{
+    position:fixed;
+    bottom:22px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:rgba(17,19,33,.94);
+    border:1px solid rgba(255,255,255,.11);
+    color:#eeeaf4;
+    padding:12px 16px;
+    border-radius:14px;
+    opacity:0;
+    pointer-events:none;
+    transition:.3s ease;
+    z-index:30;
+    box-shadow:0 15px 35px rgba(0,0,0,.35);
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media(max-width:800px){
+    .mood-grid{grid-template-columns:repeat(2,1fr)}
+    .cards{grid-template-columns:1fr}
+    .breathing{grid-template-columns:1fr}
+  }
+  @media(max-width:520px){
+    .wrap{width:min(92%,420px)}
+    nav{padding:18px 0}
+    .tiny-note{display:none}
+    .hero{padding-top:20px}
+    .mood-grid{grid-template-columns:1fr 1fr;gap:10px}
+    .mood{padding:16px}
+    .section{padding-bottom:70px}
+    .letter{padding:22px}
+  }
+</style>
+</head>
+<body>
+<div id="stars"></div>
+
+<div class="wrap">
+  <nav>
+    <div class="brand">A LITTLE PLACE <span>✦</span> FOR YOU</div>
+    <div class="tiny-note">no pressure • no expectations</div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div>
+        <div class="moon"></div>
+        <div class="eyebrow">read this slowly</div>
+        <h1>
+          You don't have to be
+          <em>okay all the time.</em>
+        </h1>
+        <p>
+          Whatever kind of day you're having, you don't need to explain it,
+          fix it, or pretend it's fine. Take a breath.
+          Let this little corner be gentle with you.
+        </p>
+
+        <div class="cta-row">
+          <button class="btn" onclick="scrollToSection('mood')">click here or scroll down..✦</button>
+          <button class="btn secondary" onclick="showSurprise(event)">Give me a surprise</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="mood">
+      <div class="eyebrow">choose without thinking</div>
+      <h2 class="section-title">How are your feeling..</h2>
+      <p class="section-sub">
+        There is no wrong answer. Pick whatever feels closest—even “I don't know.”
+      </p>
+
+      <div class="mood-grid">
+        <button class="mood" onclick="pickMood('sad', this)">
+          <div class="emoji">🌧️</div>
+          <strong>A little sad</strong>
+          <small>Need someone to sit beside the feeling.</small>
+          <span class="sound-hint"></span>
+        </button>
+        <button class="mood" onclick="pickMood('unknown', this)">
+          <div class="emoji">☁️</div>
+          <strong>I don't know</strong>
+          <small>Just… a weird day. That's valid too.</small>
+          <span class="sound-hint"></span>
+        </button>
+        <button class="mood" onclick="pickMood('angry', this)">
+          <div class="emoji">🌋</div>
+          <strong>Annoyed</strong>
+          <small>Today has tested the last remaining nerve.</small>
+          <span class="sound-hint"></span>
+        </button>
+        <button class="mood" onclick="pickMood('tired', this)">
+          <div class="emoji">🌙</div>
+          <strong>Very tired</strong>
+          <small>Brain has 37 tabs open and none are responding.</small>
+          <span class="sound-hint"></span>
+        </button>
+      </div>
+
+      <div class="message-box">
+        <div>
+          <div class="now-playing" id="nowPlaying">soundboard: waiting for your mood…</div>
+          <p id="message">
+            Pick a mood above. I promise I won't give you a motivational lecture. 🫶
+          </p>
+          <div class="message-actions">
+            <button class="mini-btn" onclick="anotherMessage()">another one ↻</button>
+          </div>
+        </div>
+      </div>
+        <div>
+          <p id="message">
+            Pick a mood above. I promise I won't give you a motivational lecture. 🫶
+          </p>
+          <div class="message-actions">
+            <button class="mini-btn" onclick="anotherMessage()">another one ↻</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="eyebrow">tiny reminders</div>
+      <h2 class="section-title">Things you may need to hear today.</h2>
+      <p class="section-sub">Especially the things you usually forget when you're overwhelmed.</p>
+
+      <div class="cards">
+        <div class="card">
+          <div class="icon">s</div>
+          <h3>You are allowed to pause.</h3>
+          <p>
+            Rest is not falling behind. Sometimes the bravest thing you can do
+            is put everything down for a little while.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">🌱</div>
+          <h3>This feeling is not forever.</h3>
+          <p>
+            A difficult hour does not get to write the story of your whole day,
+            and one bad day does not define you.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">✨</div>
+          <h3>You don't have to earn kindness.</h3>
+          <p>
+            You deserve softness even when you're not productive, cheerful,
+            perfect, or easy to understand.
+          </p>
+        </div>
+      </div>
+
+      <div class="letter">
+        <div class="letter-top">
+          <span>one little note</span>
+          <span>read whenever needed ♡</span>
+        </div>
+        <p>
+          Hey.<br><br>
+          I don't know exactly what happened today. Maybe something at home,
+          maybe your thoughts are being too loud, maybe your mood just decided
+          to be dramatic for absolutely no reason. Whatever it is, you don't
+          have to carry it perfectly.<br><br>
+          Drink some water. Unclench your jaw. Put your phone down for a minute
+          if you need to. Cry if you need to. Laugh at something stupid if you
+          can. And please remember: having a difficult moment doesn't make you
+          difficult to love.<br><br>
+          Consider this your tiny reminder that somewhere, someone is hoping
+          your day becomes a little softer.
+        </p>
+        <div class="signature">— from someone who really wants to see you smile</div>
+      </div>
+    </section>
+
+
+    <section class="section tap-section">
+      <div class="eyebrow">three little taps</div>
+      <h2 class="section-title">Okay… now tap these. 😌</h2>
+      <p class="section-sub">No serious conversation required. Just three tiny surprises.</p>
+
+      <div class="tap-grid">
+        <button class="tap-card" onclick="tapReveal(1)">
+          <span class="tap-icon">🖤</span>
+          <span class="tap-title">Tap me for a compliment</span>
+          <span class="tap-sub">there may be a little “ufff” involved</span>
+          <span class="tap-reveal" id="tap1"></span>
+        </button>
+
+        <button class="tap-card" onclick="tapReveal(2)">
+          <span class="tap-icon">🏆</span>
+          <span class="tap-title">Tap me for your rank</span>
+          <span class="tap-sub">warning: shameless teasing ahead</span>
+          <span class="tap-reveal" id="tap2"></span>
+        </button>
+
+        <button class="tap-card" onclick="tapReveal(3)">
+          <span class="tap-icon">🌙</span>
+          <span class="tap-title">Tap before you sleep</span>
+          <span class="tap-sub">save this one for bedtime</span>
+          <span class="tap-reveal" id="tap3"></span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    made with a little care… specifically for one person who deserves a softer day ✦
+  </footer>
+</div>
+
+<div class="toast" id="toast">Good. That's all you had to do. 🫶</div>
+
+<script>
+  const sounds = {
+    sad: {
+      name: "Are baap re… yaad aya 😭",
+      src: "https://www.myinstants.com/media/sounds/are-baap-re-yaad-aya.mp3"
+    },
+    unknown: {
+      name: "Aayein? 🤨",
+      src: "https://www.myinstants.com/media/sounds/aayein-meme.mp3"
+    },
+    angry: {
+      name: "DUN DUN DUNNN 😤",
+      src: "https://www.myinstants.com/media/sounds/dun-dun-dun-sound-effect-brass_8nFBccR.mp3"
+    },
+    tired: {
+      name: "Bone crack 💀",
+      src: "https://www.myinstants.com/media/sounds/bone-crack.mp3"
+    }
+  };
+
+  const moodMessages = {
+    sad: [
+      "Aww… okay, no pretending today. Come here. 🫂 You don't have to explain everything to deserve a little comfort.",
+      "And listen, madam, one bad day does NOT get to bully the beautiful person having it. 😌 Now breathe.",
+      "I know I can't magically fix whatever happened… but I can stay right here and remind you that this feeling won't own you forever.",
+      "Thoda sa sad ho sakti ho. Bas poori duniya se resignation mat de dena, okay? 🌙",
+      "You don't have to smile just because I asked. But I am quietly hoping something tiny makes you smile anyway. ♡"
+    ],
+    unknown: [
+      "Aayein? 🤨 Mood khud nahi pata, aur mujhe samjhana hai? Wah madam. 😂",
+      "It's okay to not know what you're feeling. Sometimes the heart just says 'aaj processing chal rahi hai.' ☁️",
+      "No diagnosis, no fixing. Bas ek glass paani, one deep breath, and thoda sa peace.",
+      "Maybe nothing is wrong. Maybe everything feels weird. Either way, you don't have to figure it out tonight.",
+      "And for the record, confused you is still cute. Unfortunately, evidence is overwhelming. 😌"
+    ],
+    angry: [
+      "DUN DUN DUNNN 😭 Okay okay, who annoyed my favourite person? Point them towards me. I'll provide moral support. 😤",
+      "You are allowed to be angry. Just don't let one person's nonsense rent the whole house in your head.",
+      "First: breathe. Second: unclench that jaw. Third: absolutely no dramatic decisions while the volcano is active. 🌋",
+      "Some days deserve a giant eye-roll and a quiet room. Take both.",
+      "You're not a bad person for having a bad moment. Let the anger pass without making you fight yourself too."
+    ],
+    tired: [
+      "Bone crack! 💀 Madam's battery is officially on 1%. Please recharge before operating further.",
+      "You don't have to be productive every second. Even phones get charged. You are allowed to too. 🌙",
+      "Close the imaginary 37 tabs. Nothing important will collapse in the next few minutes.",
+      "Rest without feeling guilty. You have done enough for today.",
+      "A tired heart doesn't need a speech. It needs softness, water, food, and some quiet. 🫶"
+    ]
+  };
+
+  const audio = new Audio();
+  let currentMood = 'sad';
+  let messageIndex = 0;
+
+  function playMoodSound(mood){
+    const sound = sounds[mood];
+    if(!sound) return;
+    try{
+      audio.pause();
+      audio.currentTime = 0;
+      audio.src = sound.src;
+      audio.play().catch(() => {});
+      document.getElementById('nowPlaying').textContent = "now playing: " + sound.name;
+    }catch(err){
+      document.getElementById('nowPlaying').textContent = "sound ready: " + sound.name;
+    }
+  }
+
+  function pickMood(mood, button){
+    currentMood = mood;
+    messageIndex = Math.floor(Math.random() * moodMessages[mood].length);
+    document.querySelectorAll('.mood').forEach(el => el.classList.remove('active'));
+    if(button) button.classList.add('active');
+
+    playMoodSound(mood);
+    changeMessage(moodMessages[mood][messageIndex]);
+    burst(button ? button.getBoundingClientRect().left + button.offsetWidth/2 : innerWidth/2,
+          button ? button.getBoundingClientRect().top + 40 : innerHeight/2, 5);
+
+    document.getElementById('message').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  function anotherMessage(){
+    const list = moodMessages[currentMood];
+    messageIndex = (messageIndex + 1) % list.length;
+    changeMessage(list[messageIndex]);
+  }
+
+  function changeMessage(text){
+    const el = document.getElementById('message');
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(7px)';
+    setTimeout(() => {
+      el.textContent = text;
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, 180);
+  }
+
+  function scrollToSection(id){
+    document.getElementById(id).scrollIntoView({behavior:'smooth'});
+  }
+
+  function showSurprise(e){
+    const messages = [
+      "🚨 IMPORTANT: You're officially required to smile for at least 2 seconds.",
+      "Plot twist: tomorrow may be softer than today. ✨",
+      "Emergency delivery: one invisible forehead pat + one warm hug. 🫂",
+      "You are allowed to have a weird day without becoming a weird person.",
+      "Secret message: someone thinks you're worth making a whole webpage for. 👀"
+    ];
+    const chosen = messages[Math.floor(Math.random() * messages.length)];
+    showToast(chosen);
+    burst(e.clientX, e.clientY, 8);
+  }
+
+  function tapReveal(number){
+    const replies = {
+      1: "You look good in black… but in red? Uffff. 😮‍💨❤️ That's not fair. Please stop looking that good without prior notice.",
+      2: "Fine. You're one of the best online friends I have. 🫶 But I am obviously #1… someone has to maintain the ranking system. 😂 You're safely #2 though, don't get excited.",
+      3: "Good night, pretty human. 🌙 Whatever felt heavy today, leave a little of it here. Sleep peacefully, stop overthinking for a few hours, and wake up to a gentler day. You deserve that. ♡"
+    };
+
+    const card = document.getElementById('tap' + number).closest('.tap-card');
+    const target = document.getElementById('tap' + number);
+    const wasRevealed = card.classList.contains('revealed');
+
+    document.querySelectorAll('.tap-card').forEach(c => c.classList.remove('revealed'));
+    if(!wasRevealed){
+      target.textContent = replies[number];
+      card.classList.add('revealed');
+      burst(card.getBoundingClientRect().left + card.offsetWidth/2,
+            card.getBoundingClientRect().top + 20, number === 3 ? 7 : 5);
+    }
+  }
+
+  function sendHeart(e){
+    showToast("There. One tiny step. I'm proud of you. ♡");
+    burst(e.clientX, e.clientY, 14);
+  }
+
+  // Soft random stars
+  const stars = document.getElementById('stars');
+  for(let i=0;i<90;i++){
+    const s = document.createElement('span');
+    s.className='star';
+    s.style.left = `${Math.random()*100}%`;
+    s.style.top = `${Math.random()*100}%`;
+    s.style.animationDelay = `${Math.random()*4}s`;
+    s.style.animationDuration = `${2 + Math.random()*4}s`;
+    s.style.transform = `scale(${.4 + Math.random()*1.2})`;
+    stars.appendChild(s);
+  }
+
+  // Little easter egg: press "s" to send a surprise.
+  document.addEventListener('keydown', (e)=>{
+    if(e.key.toLowerCase()==='s'){
+      showToast("Secret found. ✦ Now smile, just a little.");
+      burst(window.innerWidth/2, window.innerHeight/2, 12);
+    }
+  });
+</script>
+
+<!--
+Mood sounds sourced from Myinstants:
+Sad      = https://www.myinstants.com/en/instant/are-baap-re-yaad-aya-20126/
+I don't know = https://www.myinstants.com/en/instant/aayein-meme-98363/
+Annoyed  = https://www.myinstants.com/en/instant/dun-dun-dunnnnnnnn-68584/
+Very tired = https://www.myinstants.com/en/instant/bone-crack-23901/
+-->
+
+</body>
+</html>
